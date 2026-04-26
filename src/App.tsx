@@ -41,6 +41,25 @@ export default function App() {
   const [isUserSearchOpen, setIsUserSearchOpen] = useState(false);
 
   useEffect(() => {
+    // Global background music
+    const bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3');
+    bgMusic.loop = true;
+    bgMusic.volume = 0.05;
+    
+    // Attempt play on first interaction or when splash ends
+    const startMusic = () => {
+      bgMusic.play().catch(e => console.log("Bg music blocked:", e));
+      window.removeEventListener('click', startMusic);
+    };
+    window.addEventListener('click', startMusic);
+
+    return () => {
+      bgMusic.pause();
+      window.removeEventListener('click', startMusic);
+    };
+  }, []);
+
+  useEffect(() => {
     const unsubscribeConfig = onSnapshot(doc(db, 'config', 'site'), (docSnap) => {
       if (docSnap.exists()) {
         const config = docSnap.data();

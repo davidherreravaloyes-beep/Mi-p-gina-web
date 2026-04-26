@@ -27,29 +27,16 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     };
     loadConfig();
 
-    // Cinematic intro music
+    // Cinematic intro impact
     const audio = new Audio('https://www.myinstants.com/media/sounds/yousoko-watashi-no-souru-societi-e.mp3'); 
-    const bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3'); 
     
     audio.volume = 0.5;
-    bgMusic.volume = 0.05;
 
     const soundTimer = setTimeout(() => {
       audio.play().catch(e => console.log("Sound impact blocked:", e));
-      // Subtle build up
-      bgMusic.play().catch(e => console.log("Background music blocked:", e));
     }, 800);
 
     const timer = setTimeout(() => {
-      // Fade out background music
-      const fadeInterval = setInterval(() => {
-        if (bgMusic.volume >= 0.005) {
-          bgMusic.volume -= 0.005;
-        } else {
-          bgMusic.pause();
-          clearInterval(fadeInterval);
-        }
-      }, 200);
       onComplete();
     }, 3800);
     return () => {
